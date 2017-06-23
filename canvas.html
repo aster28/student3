@@ -1,1 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="utf-8"/>
+    <title></title> 
+    
+    function init(){
+       var canvas, ctx, pattern;
+      canvas= document.querySelector("#mycanvas");
+      ctx=canvas.getContext("2d");
+      pattern= ctx.createLinearGradient(0,0,200,200);
+      pattern.addStopColor(0,"blue");
+      pattern.addStopColor(0.3,"red");
+      pattern.addStopColor(0.3,"green");
+      pattern.fillRect(0,0, 10,10);
+      pattern.fillStyle();
+    }
+  </head>
+  <body onload="init()">
+    <canvas id ="mycanvas"></canvas>
+  
+  </body>
 
+
+</html>
