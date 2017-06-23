@@ -3,34 +3,49 @@
   <head>
   <meta charset="utf-8"/>
     <title></title> 
-  <script>  
-    function init(){
-       var canvas, ctx, pattern;
-      canvas= document.querySelector("#mycanvas");
-      ctx=canvas.getContext("2d");
-      pattern= ctx.createLinearGradient(0,0,200,200);
-      pattern.addColorStop(0,"blue");
-      pattern.addColorStop(0.3,"red");
-      pattern.addColorStop(0.3,"green");
-      draw(5);
-    }
-    function draw(n){
-      ctx.fillStyle(pattern);
-     
-      var x = canvas.width;
-      var y = canvas.height;
-      var l= x/n;
-      var h= y/n;
-      for (var i =0; i<n; i++){
-         ctx.fillRect(cellwidth*i, cellheight*i, cellwidth,cellheight);                 
-                          
-                          
-         }
-    }
+  <script> 
+    
+ var canvas, ctx, grdFrenchFlag;
+
+function init() {
+  // Good practice 1: set global vars  canvas, ctx, gradients, etc here
+   canvas = document.querySelector('#myCanvas');
+   ctx = canvas.getContext('2d');
+  
+   // The gradient we create is also a global variable, we
+   // will be able to reuse it for drawing different shapes
+   // in different functions
+  grdFrenchFlag = ctx.createLinearGradient(0, 0, 300, 200);
+              
+  // Try adding colors with first parameter between 0 and 1
+  grdFrenchFlag.addColorStop(0, "blue"); 
+  grdFrenchFlag.addColorStop(0.5, "white");
+  grdFrenchFlag.addColorStop(1, "red"); 
+
+  drawCheckboard(5);
+}
+
+// n = number of cells per row/column
+function drawCheckboard(n) {
+  ctx.fillStyle = grdFrenchFlag;
+  ctx.lineWidth=10;
+  
+  var l = canvas.width;
+  var h = canvas.height;
+
+  var cellWidth = l / n;
+  var cellHeight = h / n;
+  
+  for(i = 0; i < n; i++) {
+    for(j = i % 2; j < n; j+=2) {
+      ctx.fillRect(cellWidth*i, cellHeight*j, cellWidth, cellHeight); 
+    }  
+  }
+}
     </script>
   </head>
   <body onload="init()">
-    <canvas id ="mycanvas"></canvas>
+    <canvas id ="myCanvas"></canvas>
   
   </body>
 
