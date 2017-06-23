@@ -9,11 +9,23 @@
       canvas= document.querySelector("#mycanvas");
       ctx=canvas.getContext("2d");
       pattern= ctx.createLinearGradient(0,0,200,200);
-      pattern.addStopColor(0,"blue");
-      pattern.addStopColor(0.3,"red");
-      pattern.addStopColor(0.3,"green");
-      pattern.fillRect(0,0, 10,10);
-      pattern.fillStyle();
+      pattern.addColorStop(0,"blue");
+      pattern.addColorStop(0.3,"red");
+      pattern.addColorStop(0.3,"green");
+      draw(5);
+    }
+    function draw(n){
+      ctx.fillStyle(pattern);
+     
+      var x = canvas.width;
+      var y = canvas.height;
+      var l= x/n;
+      var h= y/n;
+      for (var i =0; i<n; i++){
+         ctx.fillRect(cellwidth*i, cellheight*i, cellwidth,cellheight);                 
+                          
+                          
+         }
     }
   </head>
   <body onload="init()">
