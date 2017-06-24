@@ -1,59 +1,74 @@
 
-<!doctype html>
-<html>
-  <head>
-  <meta charset="utf-8"/>
-    <title></title>
-    <style>
-     #myCanvas {
-         border: 1px solid black;
-     }
- </style>
-  <script> 
-    
- var canvas, ctx, grdFrenchFlag;
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+      <meta charset="utf-8"/>
+      <title>Video</title>
+        <style>
+            body {
+                margin: 10px;
+                padding: 0px;
+            }
 
-function init() {
-  // Good practice 1: set global vars  canvas, ctx, gradients, etc here
-   canvas = document.querySelector('#myCanvas');
-   ctx = canvas.getContext('2d');
-  
-   // The gradient we create is also a global variable, we
-   // will be able to reuse it for drawing different shapes
-   // in different functions
-  grdFrenchFlag = ctx.createLinearGradient(0, 0, 300, 200);
-              
-  // Try adding colors with first parameter between 0 and 1
-  grdFrenchFlag.addColorStop(0, "blue"); 
-  grdFrenchFlag.addColorStop(0.5, "white");
-  grdFrenchFlag.addColorStop(1, "red"); 
+            #myCanvas {
+                border: 10px solid red;
+            }
+        </style>
+        <script>
+            var video;
+            var canvas, ctx;
+            var angle = 0;
 
-  drawCheckboard(5);
-}
+            function init() {
+                video = document.getElementById('sourcevid');
+                canvas = document.getElementById('myCanvas');
+                ctx = canvas.getContext('2d');
 
-// n = number of cells per row/column
-function drawCheckboard(n) {
-  ctx.fillStyle = grdFrenchFlag;
-  ctx.lineWidth=10;
-  
-  var l = canvas.width;
-  var h = canvas.height;
+                setInterval("processFrame()", 25);
+            }
 
-  var cellWidth = l / n;
-  var cellHeight = h / n;
-  
-  for(i = 0; i < n; i++) {
-    for(j = i % 2; j < n; j+=2) {
-      ctx.fillRect(cellWidth*i, cellHeight*j, cellWidth, cellHeight); 
-    }  
-  }
-}
-    </script>
-  </head>
-  <body onload="init()">
-    <canvas id ="myCanvas" width="300" height="300"></canvas>
-  
-  </body>
+            function processFrame() {
 
+                // Uncomment next line for drawing 100% copy of the video content
+                //ctx.drawImage(video, 0, 0);
 
+                // Comment these 4 lines if you uncommented the previous one
+                ctx.drawImage(video, 0, 0, 320, 180);
+
+                drawRotatingVideo(480, 90);
+
+                ctx.drawImage(video, 0, 180, 320, 180);
+                ctx.drawImage(video, 320, 180, 320, 180);
+            }
+
+            function drawRotatingVideo(x, y) {
+                // Clear thze zone at the top right quarter of the canvas
+                ctx.clearRect(320, 0, 320, 180);
+
+                // We are going to change the coordinate system, save the context !
+                ctx.save();
+                // translate, rotate and recenter the image at its "real" center, 
+                //not the top left corner
+                ctx.translate(x, y);
+                ctx.rotate(angle += 0.01);
+                ctx.translate(-80, -45);
+
+                ctx.drawImage(video, 0, 0, 160, 90);
+
+                // restore the context
+                ctx.restore();
+
+            }
+        </script>
+    </head>
+
+    <body onload="init()" >
+        <p>This is a &lt;video&gt; element: </p>
+        <video id="sourcevid" autoplay loop>
+            <source src="http://mainline.i3s.unice.fr/mooc/BigBuckBunny_640x360.mp4" type="video/mp4" />
+            <source src="http://mainline.i3s.unice.fr/mooc/BigBuckBunny_640x360.ogv" type="video/ogg"/>
+        </video>
+        <p>This is a &lt;canvas&gt; element: </p>
+        <canvas id="myCanvas" width="620" height="360"></canvas>
+    </body>
 </html>
